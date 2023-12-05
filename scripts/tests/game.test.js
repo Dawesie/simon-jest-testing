@@ -5,7 +5,9 @@
 const {
     game,
     newGame,
-    showScore
+    showScore,
+    addTurn,
+    lightsOn
 } = require("../game");
 
 
@@ -47,8 +49,8 @@ describe("newGame works correctly", () => {
     test("should set game score to zero", () => {
         expect(game.score).toEqual(0);
     });
-    test("should clear the computer sequence array", () => {
-        expect(game.currentGame.length).toEqual(0);
+    test("should should be one move in the computer's game array", () => {
+        expect(game.currentGame.length).toBe(1);
     });
     test("should clear the player moves array", () => {
         expect(game.playerMoves.length).toEqual(0);
@@ -57,4 +59,27 @@ describe("newGame works correctly", () => {
         expect(document.getElementById("score").innerText).toEqual(0)
     });
 
+});
+
+describe("gameplay works correctly", () => {
+    beforeEach(() => {
+        game.score = 0;
+        game.playerMoves = [];
+        game.currentGame = [];
+        addTurn();
+    });
+    afterEach(() => {
+        game.score = 0;
+        game.playerMoves = [];
+        game.currentGame = [];
+    });
+    test("assTurn dds a new turn to the game", () => {
+        addTurn();
+        expect(game.currentGame.length).toBe(2);
+    });
+    test("should add correct class to light up the buttons", () => {
+        let button = document.getElementById(game.currentGame[0]);
+        lightsOn(game.currentGame[0]);
+        expect(button.classList).toContain("light");
+    });
 });
